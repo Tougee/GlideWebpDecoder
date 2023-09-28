@@ -1,0 +1,65 @@
+plugins {
+    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.kotlinAndroid)
+}
+
+android {
+    namespace 'com.bumptech.glide.integration.webp'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 24
+        versionCode 1
+        versionName "0.0.1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        ndk {
+            abiFilter "armeabi-v7a"
+            abiFilter "arm64-v8a"
+            abiFilter "x86"
+            abiFilter "x86_64"
+        }
+    }
+
+    externalNativeBuild {
+        ndkBuild {
+            path "src/main/jniLibs/Android.mk"
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = []
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation libs.core.ktx
+    implementation libs.appcompat
+    implementation libs.material
+    compileOnly libs.annotation
+    compileOnly libs.fragment
+    compileOnly libs.vectordrawable.animated
+    implementation libs.glide.glide
+    annotationProcessor libs.glide.compiler
+    testImplementation libs.junit
+    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation libs.espresso.core
+}
